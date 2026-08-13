@@ -1,11 +1,16 @@
 name: SDK Contract CI
 
-# Das SDK besitzt die autoritative Wertemenge. Dieser Job stellt zwei Dinge
-# sicher, damit das SDK NICHT selbst zur zweiten Wahrheit wird:
+# Das SDK besitzt die autoritative Wertemenge. Dieser Job stellt sicher, dass
+# das SDK SELBST nicht zur zweiten Wahrheit wird:
 #   1. Jedes Kern-Schema parst als gueltiges JSON.
-#   2. Die maschinenlesbare Contract-Datei (contract/*.enum.json) ist aus dem
-#      Schema erzeugt — wird sie von Hand geaendert, weicht sie ab, und dieser
-#      Job wird rot. Der Waechter des Consumers haengt an genau dieser Datei.
+#   2. contract/run-state.enum.json ist AUS dem Schema ERZEUGT. Der Generator
+#      (scripts/generate_contract.py --check) wird rot, wenn der Extrakt von
+#      Hand geaendert wurde. schema_version im Extrakt ist abgeleitet (aus
+#      schema_version.toml), nie behauptet.
+#
+# Konstruktion statt Waechter: ein erzeugtes Artefakt braucht keinen Waechter,
+# weil es keinen handschriftlichen Weg in den Baum hat. Der --check ist nur
+# der Rueckfall.
 
 on:
   push:
@@ -27,30 +32,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validierung Schema <-> Contract-enum
+      - name: Schemas als gueltiges JSON pruefen
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
-
-          # 1. Schemas sind gueltiges JSON.
           for schema in Path("schemas").glob("*.schema.json"):
               json.loads(schema.read_text(encoding="utf-8"))
               print(f"  OK schema: {schema}")
-
-          # 2. contract/run-state.enum.json entspricht dem Schema-enum.
-          schema = json.loads(Path("schemas/run-state.schema.json").read_text())
-          from_schema = set(schema["properties"]["state"]["enum"])
-          contract = json.loads(Path("contract/run-state.enum.json").read_text())
-          from_contract = set(contract["values"])
-          assert contract["schema_version"] == "1.0.0", contract["schema_version"]
-          if from_schema != from_contract:
-              only_schema = from_schema - from_contract
-              only_contract = from_contract - from_schema
-              raise SystemExit(
-                  f"Drift im SDK selbst: schema-only={sorted(only_schema)}, "
-                  f"contract-only={sorted(only_contract)}"
-              )
-          print(f"  OK contract: run-state.enum.json ({len(from_contract)} Werte)")
-          print("PASS: SDK besitzt EINE Wertemenge.")
           PY
+
+      - name: Extrakt aus Schema erzeugen (Konstruktion, --check als Rueckfall)
+        run: python3 scripts/generate_contract.py --check

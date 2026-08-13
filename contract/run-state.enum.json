@@ -1,6 +1,6 @@
 {
   "contract": "run-state",
-  "schema_version": "1.0.0",
+  "schema_version": "0.1.0",
   "source": "schemas/run-state.schema.json#/properties/state/enum",
   "values": [
     "BLOCKED_WAITING_FOR_GATE",
