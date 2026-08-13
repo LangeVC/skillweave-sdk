@@ -7,7 +7,12 @@
 [schema]
 # Kanonische Schema-Version. Ein Breaking-Change an einem Kern-Schema erhöht
 # den Major, ein additiver den Minor.
-version = "1.0.0"
+#
+# 0.1.0, nicht 1.0.0: Dieses Repo ist Struktur, kein vollzogener Schnitt.
+# Die GLE-001-Schemas fehlen, profiles/packs-pro sind leer, der Dateivorzug
+# im Core steht aus. 1.0.0 kommt, wenn die Vierteilung inhaltlich vollzogen
+# ist (Begründung: docs/repo-vierteilung-contract.md §B.1 im Core).
+version = "0.1.0"
 
 [schema_files]
 # Die Kernschemas, die dieses SDK besitzt. GLE-001 ergänzt später die fünf
