@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skillweave-sdk"
+version = "0.1.0"
+description = "Contract authority for SkillWeave: schemas and the taxonomy value set."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "LangeVC.com" }]
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://git.langevc.com/skillweave/skillweave-sdk"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# The version here and the one in schema_version.toml are the same number for the
+# same reason: this repository is structure, not a completed cut. They are checked
+# against each other by tests/test_version_agrees.py rather than being derived, so
+# neither file silently follows the other.
