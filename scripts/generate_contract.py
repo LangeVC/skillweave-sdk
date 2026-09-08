@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""Erzeugt contract/run-state.enum.json AUS dem Schema und der SDK-Version.
+"""Generate contract/run-state.enum.json FROM the schema and the SDK version.
 
-Konstruktion statt Waechter (docs/repo-vierteilung-contract.md §C.2 im Core):
-der contract/*.json-Extrakt ist ein ABGELEITETES Artefakt, kein eigenstaendig
-bearbeitetes Dokument. Er kann nicht driften, weil er keinen handschriftlichen
-Weg in den Baum hat — er wird immer aus run-state.schema.json erzeugt.
+Construction rather than a guard: the contract/*.json extract is a DERIVED
+artefact, not a document edited in its own right. It cannot drift because it has
+no hand-written route into the tree — it is always generated from
+run-state.schema.json.
 
-Die schema_version im Extrakt ist ebenfalls abgeleitet (aus
-schema_version.toml), nie von Hand gesetzt. Eine eigenstaendige Zahl dort waere
-eine weitere Drift-Stelle (zweite/mehrfache Wahrheit).
+The schema_version in the extract is likewise derived, from schema_version.toml,
+never set by hand. A number standing on its own there would be one more place to
+drift: a second truth.
 
-Aufruf:
+Usage:
     python3 scripts/generate_contract.py [--check]
 
-Ohne --check schreibt der Generator den Extrakt neu (sortiert, diff-stabil).
-Mit --check vergleicht er den eingecheckten Extrakt gegen den erzeugten und
-verlaesst rc!=0 bei Abweichung — der Rueckfall, wenn Konstruktion aus einem
-Grund nicht greift.
+Without --check the generator rewrites the extract, sorted and diff-stable. With
+--check it compares the committed extract against the generated one and exits
+non-zero on any difference — the fallback, for when construction does not take
+hold for some reason.
 """
 import json
 import sys
@@ -35,7 +35,7 @@ EXTRACT_PATH = ROOT / "contract" / "run-state.enum.json"
 
 def _read_version() -> str:
     if tomllib is None:
-        raise SystemExit("tomllib fehlt (Python >=3.11 noetig).")
+        raise SystemExit("tomllib is missing; Python >= 3.11 is required.")
     data = tomllib.loads(VERSION_PATH.read_text(encoding="utf-8"))
     return data["schema"]["version"]
 
@@ -44,7 +44,7 @@ def _read_schema_enum() -> list:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     enum = schema["properties"]["state"]["enum"]
     if not isinstance(enum, list) or not enum:
-        raise SystemExit(f"{SCHEMA_PATH}: properties.state.enum leer oder fehlt")
+        raise SystemExit(f"{SCHEMA_PATH}: properties.state.enum is empty or absent")
     return enum
 
 
@@ -54,7 +54,7 @@ def generate() -> dict:
         "contract": "run-state",
         "schema_version": _read_version(),
         "source": "schemas/run-state.schema.json#/properties/state/enum",
-        # Sortiert fuer diff-Stabilitaet; die Reihenfolge ist keine Semantik.
+        # Sorted for diff stability; the order carries no semantics.
         "values": sorted(enum),
     }
 
@@ -65,22 +65,22 @@ def main() -> int:
 
     if check:
         if not EXTRACT_PATH.is_file():
-            print("DRIFT: Extrakt fehlt, muss erzeugt werden.", file=sys.stderr)
+            print("DRIFT: the extract is absent and must be generated.", file=sys.stderr)
             return 1
         existing = json.loads(EXTRACT_PATH.read_text(encoding="utf-8"))
         if existing != generated:
-            print("DRIFT: contract/run-state.enum.json stimmt nicht mit dem "
-                  "Schema ueberein. Neu erzeugen (ohne --check).", file=sys.stderr)
+            print("DRIFT: contract/run-state.enum.json does not agree with the "
+                  "schema. Regenerate it (without --check).", file=sys.stderr)
             return 1
-        print("OK: Extrakt deckungsgleich mit Schema (erzeugt, nicht handschriftlich).")
+        print("OK: extract agrees with the schema (generated, not hand-written).")
         return 0
 
     EXTRACT_PATH.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(generated, indent=2, ensure_ascii=False) + "\n"
     EXTRACT_PATH.write_text(text, encoding="utf-8")
-    print(f"Erzeugt: {EXTRACT_PATH.relative_to(ROOT)} "
+    print(f"Generated: {EXTRACT_PATH.relative_to(ROOT)} "
           f"(schema_version={generated['schema_version']}, "
-          f"{len(generated['values'])} Werte)")
+          f"{len(generated['values'])} values)")
     return 0
 
 

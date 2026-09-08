@@ -1,16 +1,16 @@
 name: SDK Contract CI
 
-# Das SDK besitzt die autoritative Wertemenge. Dieser Job stellt sicher, dass
-# das SDK SELBST nicht zur zweiten Wahrheit wird:
+# The SDK owns the authoritative value set. This job makes sure the SDK does not
+# itself become a second truth:
 #   1. Jedes Kern-Schema parst als gueltiges JSON.
-#   2. contract/run-state.enum.json ist AUS dem Schema ERZEUGT. Der Generator
-#      (scripts/generate_contract.py --check) wird rot, wenn der Extrakt von
-#      Hand geaendert wurde. schema_version im Extrakt ist abgeleitet (aus
+#   2. contract/run-state.enum.json is GENERATED FROM the schema. The generator
+#      (scripts/generate_contract.py --check) goes red if the extract was edited
+#      by hand. schema_version in the extract is derived (from
 #      schema_version.toml), nie behauptet.
 #
 # Konstruktion statt Waechter: ein erzeugtes Artefakt braucht keinen Waechter,
-# weil es keinen handschriftlichen Weg in den Baum hat. Der --check ist nur
-# der Rueckfall.
+# because it has no hand-written route into the tree. The --check is only the
+# fallback.
 
 on:
   push:
