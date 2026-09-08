@@ -1,12 +1,12 @@
 name: Mirror to GitHub
 
-# Forgejo ist kanonisch; GitHub (LangeVC/skillweave-sdk) ist der oeffentliche
-# read-only Mirror. Force-Push genau der Ref, die den Lauf ausgeloest hat.
+# Forgejo is canonical; GitHub (LangeVC/skillweave-sdk) is the public read-only
+# mirror. Force-push exactly the ref that triggered the run.
 #
 # exact-ref Muster (LVC-MIR-G0, 2026-07-28), identisch zum Core-Repo.
-# WICHTIG fuer die Erstbefuellung: ein leeres Repo faellt sich nur ueber einen
-# echten Ref. Der erste Push auf main muss auf GitHub einen main erzeugen; das
-# exact-ref Muster tut das, weil es die ausloesende Ref nachspiegelt.
+# Important for the initial fill: an empty repository can only be populated
+# through a real ref. The first push to main has to create a main on GitHub, and
+# the exact-ref pattern does that because it mirrors the triggering ref back.
 
 on:
   push:
