@@ -24,6 +24,10 @@ Repository = "https://git.langevc.com/skillweave/skillweave-sdk"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+skillweave_sdk = ["py.typed"]
+"*" = ["*.json", "*.toml"]
+
 # The version here and the one in schema_version.toml are the same number for the
 # same reason: this repository is structure, not a completed cut. They are checked
 # against each other by tests/test_version_agrees.py rather than being derived, so

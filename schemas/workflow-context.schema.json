@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://skillweave.dev/schemas/workflow-context/v1",
   "title": "WorkflowContext",
   "type": "object",
   "required": [
