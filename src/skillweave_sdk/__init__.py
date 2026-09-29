@@ -17,7 +17,7 @@ __all__ = ["__version__", "SCHEMA_VERSION"]
 
 #: Distribution version. Kept equal to ``[schema].version`` in
 #: ``schema_version.toml``; a test asserts the two agree.
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 #: Canonical schema version consumers pin against.
-SCHEMA_VERSION = "0.1.0"
+SCHEMA_VERSION = "0.2.0"

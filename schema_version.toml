@@ -11,7 +11,7 @@
 # GLE-001 schemas are absent, profiles and packs-pro are empty, and the core's
 # file precedence is still outstanding. 1.0.0 arrives when the four-way split is
 # substantively done.
-version = "0.1.0"
+version = "0.2.0"
 
 [schema_files]
 # The core schemas this SDK owns. GLE-001 later adds the five new ones
