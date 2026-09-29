@@ -24,6 +24,16 @@ import re
 from pathlib import Path
 from typing import Any
 
+try:
+    from importlib.resources import files as _resources_files
+except ImportError:
+    # Python < 3.9 fallback (importlib_resources backport or
+    # importlib.resources without .files).
+    try:
+        from importlib.resources import files as _resources_files
+    except ImportError:
+        _resources_files = None  # type: ignore[assignment]
+
 # All schema filenames in the SDK contract set: 4 core + 9 lifecycle.
 SCHEMA_FILENAMES = (
     "evidence.schema.json",
@@ -59,11 +69,13 @@ def _default_schemas_dir() -> Path:
     env = os.environ.get("SKILLWEAVE_SCHEMA_DIR")
     if env:
         return Path(env)
-    here = Path(__file__).resolve()
-    for candidate in (here.parents[2] / "schemas", here.parent / "schemas"):
-        if candidate.is_dir():
-            return candidate
-    return Path.cwd() / "schemas"
+    if _resources_files is not None:
+        try:
+            return Path(str(_resources_files("skillweave_sdk") / "schemas"))
+        except Exception:
+            pass
+    # Fallback: resolve relative to this file (source-tree dev).
+    return Path(__file__).resolve().parent / "schemas"
 
 
 def _canonical(schema: dict) -> bytes:

@@ -15,21 +15,21 @@ version = "0.2.0"
 
 [schema_files]
 # All 13 schemas in the SDK contract set: 4 core + 9 lifecycle.
-evidence = "schemas/evidence.schema.json"
-prompt-sequence = "schemas/prompt-sequence.schema.json"
-run-state = "schemas/run-state.schema.json"
-workflow-context = "schemas/workflow-context.schema.json"
-work-profile = "schemas/work-profile.schema.json"
-lifecycle-profile = "schemas/lifecycle-profile.schema.json"
-deliverable-contract = "schemas/deliverable-contract.schema.json"
-evidence-contract = "schemas/evidence-contract.schema.json"
-category-pack = "schemas/category-pack.schema.json"
-category-taxonomy = "schemas/category-taxonomy.schema.json"
-model-provider = "schemas/model-provider.schema.json"
-search-provider = "schemas/search-provider.schema.json"
-subject-ref = "schemas/subject-ref.schema.json"
+evidence = "src/skillweave_sdk/schemas/evidence.schema.json"
+prompt-sequence = "src/skillweave_sdk/schemas/prompt-sequence.schema.json"
+run-state = "src/skillweave_sdk/schemas/run-state.schema.json"
+workflow-context = "src/skillweave_sdk/schemas/workflow-context.schema.json"
+work-profile = "src/skillweave_sdk/schemas/work-profile.schema.json"
+lifecycle-profile = "src/skillweave_sdk/schemas/lifecycle-profile.schema.json"
+deliverable-contract = "src/skillweave_sdk/schemas/deliverable-contract.schema.json"
+evidence-contract = "src/skillweave_sdk/schemas/evidence-contract.schema.json"
+category-pack = "src/skillweave_sdk/schemas/category-pack.schema.json"
+category-taxonomy = "src/skillweave_sdk/schemas/category-taxonomy.schema.json"
+model-provider = "src/skillweave_sdk/schemas/model-provider.schema.json"
+search-provider = "src/skillweave_sdk/schemas/search-provider.schema.json"
+subject-ref = "src/skillweave_sdk/schemas/subject-ref.schema.json"
 
 [taxonomy]
 # The taxonomy value set lives as a schema enum. This section records where. A
 # validator needs only that value set, never core access.
-run-state-vocabulary = "schemas/run-state.schema.json#/properties/state/enum"
+run-state-vocabulary = "src/skillweave_sdk/schemas/run-state.schema.json#/properties/state/enum"
