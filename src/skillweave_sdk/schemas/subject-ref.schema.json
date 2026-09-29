@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://skillweave.dev/schemas/subject-ref/v1",
+  "title": "Subject Ref",
+  "description": "A tagged union identifying the subject of work. The git variant carries repo and commit; the CMS variants are identified without an invented commit. SDK-only contract: the Core references subjects through its own mechanisms and does not import this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "kind"],
+  "properties": {
+    "contractVersion": {
+      "const": "1.0.0"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["git", "site", "page", "content_item", "configuration", "deployment", "incident"]
+    },
+    "repo": {
+      "type": "string"
+    },
+    "commit": {
+      "type": "string"
+    },
+    "siteId": {
+      "type": "string"
+    },
+    "pageId": {
+      "type": "string"
+    },
+    "contentItemId": {
+      "type": "string"
+    },
+    "configurationId": {
+      "type": "string"
+    },
+    "deploymentId": {
+      "type": "string"
+    },
+    "incidentId": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "git" } }
+      },
+      "then": {
+        "required": ["repo", "commit"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "site" } }
+      },
+      "then": {
+        "required": ["siteId"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "page" } }
+      },
+      "then": {
+        "required": ["pageId"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "content_item" } }
+      },
+      "then": {
+        "required": ["contentItemId"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "configuration" } }
+      },
+      "then": {
+        "required": ["configurationId"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "deployment" } }
+      },
+      "then": {
+        "required": ["deploymentId"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "incident" } }
+      },
+      "then": {
+        "required": ["incidentId"]
+      }
+    }
+  ]
+}
