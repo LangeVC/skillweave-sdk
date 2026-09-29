@@ -1,29 +1,28 @@
-# skillweave-sdk — Vertragsautorität
+# skillweave-sdk — contract authority
 #
-# Diese Datei ist die Wurzel des Releasegraphen (docs/repo-vierteilung-contract.md
-# §B). Alle Consumer pinnen eine Version aus dieser Datei; kein Consumer
-# referenziert "latest" oder eine Branch-Spitze.
+# This file is the root of the release graph. Every consumer pins a version from
+# here; no consumer references "latest" or a branch tip.
 
 [schema]
-# Kanonische Schema-Version. Ein Breaking-Change an einem Kern-Schema erhöht
-# den Major, ein additiver den Minor.
+# Canonical schema version. A breaking change to a core schema raises the major,
+# an additive one the minor.
 #
-# 0.1.0, nicht 1.0.0: Dieses Repo ist Struktur, kein vollzogener Schnitt.
-# Die GLE-001-Schemas fehlen, profiles/packs-pro sind leer, der Dateivorzug
-# im Core steht aus. 1.0.0 kommt, wenn die Vierteilung inhaltlich vollzogen
-# ist (Begründung: docs/repo-vierteilung-contract.md §B.1 im Core).
-version = "0.1.0"
+# 0.1.0, not 1.0.0: this repository is structure, not a completed cut. The
+# GLE-001 schemas are absent, profiles and packs-pro are empty, and the core's
+# file precedence is still outstanding. 1.0.0 arrives when the four-way split is
+# substantively done.
+version = "0.2.0"
 
 [schema_files]
-# Die Kernschemas, die dieses SDK besitzt. GLE-001 ergänzt später die fünf
-# neuen Schemas (WorkProfile, DeliverableContract, EvidenceContract,
-# CategoryPack, LifecycleProfile); bis dahin sind dies die vier bestehenden.
+# The core schemas this SDK owns. GLE-001 later adds the five new ones
+# (WorkProfile, DeliverableContract, EvidenceContract, CategoryPack,
+# LifecycleProfile); until then these four are the set.
 evidence = "schemas/evidence.schema.json"
 prompt-sequence = "schemas/prompt-sequence.schema.json"
 run-state = "schemas/run-state.schema.json"
 workflow-context = "schemas/workflow-context.schema.json"
 
 [taxonomy]
-# Die Taxonomie-Wertemenge liegt als Schema-enum. Diese Sektion dokumentiert,
-# wo. Der Validator (GLE-005) braucht nur diese Wertemenge, keinen Core-Zugriff.
+# The taxonomy value set lives as a schema enum. This section records where. A
+# validator needs only that value set, never core access.
 run-state-vocabulary = "schemas/run-state.schema.json#/properties/state/enum"

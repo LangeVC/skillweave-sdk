@@ -1,0 +1,8 @@
+# Build artefacts. `pip install -e .` writes the egg-info tree into src/; it was
+# committed once by accident and is not part of the distribution's source.
+*.egg-info/
+__pycache__/
+*.py[cod]
+build/
+dist/
+.venv/
