@@ -28,7 +28,7 @@ except ImportError:
     tomllib = None
 
 ROOT = Path(__file__).resolve().parent.parent
-SCHEMA_PATH = ROOT / "schemas" / "run-state.schema.json"
+SCHEMA_PATH = ROOT / "src" / "skillweave_sdk" / "schemas" / "run-state.schema.json"
 VERSION_PATH = ROOT / "schema_version.toml"
 EXTRACT_PATH = ROOT / "contract" / "run-state.enum.json"
 

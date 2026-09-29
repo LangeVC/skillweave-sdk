@@ -18,7 +18,7 @@ from skillweave_sdk.validator import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-SCHEMAS = ROOT / "schemas"
+SCHEMAS = ROOT / "src" / "skillweave_sdk" / "schemas"
 
 # ---------------------------------------------------------------------------
 # helpers
