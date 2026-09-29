@@ -1,48 +1,53 @@
 # skillweave-sdk
 
-Vertragsautorität für SkillWeave: die Kernschemas und die Taxonomie-Wertemenge,
-gegen die jeder Consumer validiert.
+Contract authority for SkillWeave: the core schemas and the taxonomy value set
+every consumer validates against.
 
-**Kein Laufzeitcode. Keine Produktlogik.** Dieses Repo ist die Wurzel des
-Releasegraphen und hat keine Laufzeitabhängigkeit auf `skillweave`.
+**No runtime code. No product logic.** This repository is the root of the release
+graph and has no runtime dependency on `skillweave`.
 
-Forgejo ist kanonisch; GitHub ist der read-only Mirror.
+Forgejo is canonical; GitHub is the read-only mirror.
 
-## Inhalt
+## Contents
 
-| Pfad | Zweck |
+| Path | Purpose |
 |---|---|
-| `schemas/` | Die Kernschemas (JSON Schema Draft 2020-12) |
-| `contract/` | Maschinenlesbare Wertemengen-Auszüge, gegen die ein Consumer ohne Python-Kontext validieren kann |
-| `schema_version.toml` | Wurzel des Releasegraphen; Consumer pinnen eine Version hieraus |
+| `schemas/` | The core schemas (JSON Schema draft 2020-12) |
+| `contract/` | Machine-readable value-set extracts, so a consumer can validate without a Python context |
+| `schema_version.toml` | Root of the release graph; consumers pin a version from here |
+| `src/skillweave_sdk/` | The distribution. Carries the version and nothing else yet |
 
-## Die Trennlinie
+## Where the line runs
 
-Dieses SDK besitzt den **Vertrag** — die autoritative **Wertemenge** von Schema
-und Vokabular, nicht jede Codezeile, die sie berührt.
+This SDK owns the **contract** — the authoritative **value set** of schema and
+vocabulary, not every line of code that touches it.
 
 ```
-skillweave-sdk   besitzt den VERTRAG     (Schemas, Taxonomie-Wertemenge)
-skillweave       besitzt die AUSFÜHRUNG  (Runtime, Kernel, Engine)
-skillweave-profiles  besitzt die MEINUNG (Profile, Category Packs)
-skillweave-packs-pro besitzt COMMERCIAL OPINION (providergebunden)
+skillweave-sdk        owns the CONTRACT    (schemas, taxonomy value set)
+skillweave            owns EXECUTION       (runtime, kernel, engine)
+skillweave-profiles   owns OPINION         (profiles, category packs)
+skillweave-packs-pro  owns COMMERCIAL OPINION (provider-bound)
 ```
 
-Konkret am Statusvokabular: `run-state.schema.json#/properties/state/enum`
-trägt die Wertemenge. Der Core trägt `RunStateModel` (Member-Namen) und
-`legal_transitions` (Ausführungssemantik). Ein Validator braucht nur die
-Wertemenge — das ist das Argument dafür, dass ein externer Pack-Autor ohne
-Core-Zugriff validieren kann (GLE-005).
+Concretely, on the state vocabulary: `run-state.schema.json#/properties/state/enum`
+carries the value set. The core carries `RunStateModel` (the member names) and
+`legal_transitions` (execution semantics). A validator needs only the value set —
+that is the argument for an external pack author being able to validate without
+core access.
 
-## Versionierung
+## Versioning
 
-`schema_version.toml` → `schema.version`. Breaking-Change → Major, additiv →
-Minor. Ein Consumer pinnt eine exakte Version und validiert dagegen; er
-referenziert nie „latest".
+`schema_version.toml` → `schema.version`. A breaking change raises the major, an
+additive one the minor. A consumer pins an exact version and validates against it;
+it never references "latest".
 
-## Cross-Repo-Contract-CI
+The distribution version in `pyproject.toml` is the same number, asserted by
+`tests/test_version_agrees.py` rather than derived, so neither file silently
+follows the other.
 
-Consumer halten einen Wächter, der ihre Wertemengen gegen die gepinnte
-SDK-Fassung vergleicht. Wird ein Contract hier gebrochen, wird der Build des
-Consumers rot. Der Nachweis ist erst erbracht, wenn ein absichtlich gebrochener
-Contract den Build im anderen Repo rot macht — nicht wenn die Pipeline grün ist.
+## Cross-repo contract CI
+
+Consumers keep a guard that compares their value sets against the pinned SDK
+version. Break a contract here and the consumer's build goes red. The proof is
+only delivered once a deliberately broken contract turns the other repository's
+build red — not when the pipeline is green.
